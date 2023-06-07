@@ -1,6 +1,6 @@
 use crate::schema::*;
 
-#[derive(diesel::Queryable)]
+#[derive(diesel::Queryable, rocket::serde::Serialize, rocket::serde::Deserialize)]
 pub struct Rustacean {
     pub id: i32,
     pub name: String,
@@ -8,7 +8,7 @@ pub struct Rustacean {
     pub create_at: chrono::NaiveDateTime,
 }
 
-#[derive(diesel::Insertable)]
+#[derive(diesel::Insertable, rocket::serde::Deserialize)]
 #[diesel(table_name = rustaceans)]
 pub struct NewRustacean {
     pub name: String,

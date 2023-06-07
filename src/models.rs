@@ -15,7 +15,7 @@ pub struct NewRustacean {
     pub email: String,
 }
 
-#[derive(diesel::Queryable, diesel::Associations)]
+#[derive(diesel::Queryable, diesel::Associations, rocket::serde::Serialize, rocket::serde::Deserialize)]
 #[diesel(belongs_to(Rustacean))]
 pub struct Crate {
     pub id: i32,
@@ -27,7 +27,7 @@ pub struct Crate {
     pub create_at: chrono::NaiveDateTime,
 }
 
-#[derive(diesel::Insertable)]
+#[derive(diesel::Insertable, rocket::serde::Deserialize)]
 #[diesel(table_name = crates)]
 pub struct NewCrate {
     pub rustacean_id: i32,

@@ -5,8 +5,8 @@ use rocket::{get, post, put, delete};
 use rocket::serde::json::serde_json::json;
 
 use crate::DbConn;
-use crate::models::*;
-use crate::repositories::*;
+use crate::models::{Rustacean, NewRustacean};
+use crate::repositories::RustaceanRepository;
 
 #[get("/rustaceans")]
 pub async fn get_rustaceans(db: DbConn) -> Result<Value, Custom<Value>> {
@@ -17,7 +17,7 @@ pub async fn get_rustaceans(db: DbConn) -> Result<Value, Custom<Value>> {
   }).await
 }
 
-#[get("/rustaceans/<id>")]
+#[get("/rustacean/<id>")]
 pub async fn view_rustacean(db: DbConn, id: i32) -> Result<Value, Custom<Value>> {
   db.run(move |c| {
     RustaceanRepository::find(c, id)
@@ -26,7 +26,7 @@ pub async fn view_rustacean(db: DbConn, id: i32) -> Result<Value, Custom<Value>>
   }).await
 }
 
-#[post("/rustaceans", format = "json", data = "<new_rustacean>")]
+#[post("/rustacean", format = "json", data = "<new_rustacean>")]
 pub async fn create_rustacean(db: DbConn, new_rustacean: Json<NewRustacean>) -> Result<Value, Custom<Value>> {
   db.run(move |c| {
     RustaceanRepository::create(c, new_rustacean.into_inner())
@@ -35,7 +35,7 @@ pub async fn create_rustacean(db: DbConn, new_rustacean: Json<NewRustacean>) -> 
   }).await
 }
 
-#[put("/rustaceans/<id>", format = "json", data = "<rustacean>")]
+#[put("/rustacean/<id>", format = "json", data = "<rustacean>")]
 pub async fn update_rustacean(db: DbConn, id: i32, rustacean: Json<Rustacean>) -> Result<Value, Custom<Value>> {
   db.run(move |c| {
     RustaceanRepository::save(c, id, rustacean.into_inner())
@@ -44,7 +44,7 @@ pub async fn update_rustacean(db: DbConn, id: i32, rustacean: Json<Rustacean>) -
   }).await
 }
 
-#[delete("/rustaceans/<id>")]
+#[delete("/rustacean/<id>")]
 pub async fn delete_rustacean(db: DbConn, id: i32) -> Result<Value, Custom<Value>> {
   db.run(move |c| {
     RustaceanRepository::delete(c, id)

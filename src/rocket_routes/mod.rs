@@ -1,2 +1,2 @@
-// pub mod crates;
+pub mod crates;
 pub mod rustaceans;

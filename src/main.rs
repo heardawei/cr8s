@@ -1,4 +1,3 @@
-#[macro_use] extern crate diesel;
 #[macro_use] extern crate rocket;
 
 mod models;
@@ -6,7 +5,7 @@ mod schema;
 mod repositories;
 mod rocket_routes;
 
-#[rocket_sync_db_pools::database("postgres")]
+#[rocket_sync_db_pools::database("postgres_app_db")]
 pub struct DbConn(diesel::PgConnection);
 
 #[rocket::main]

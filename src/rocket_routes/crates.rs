@@ -5,7 +5,7 @@ use rocket::{get, post, put, delete};
 use rocket::serde::json::serde_json::json;
 
 use crate::DbConn;
-use crate::models::{Crate, NewCrate};
+use crate::models::NewCrate;
 use crate::repositories::CrateRepository;
 
 #[get("/crates")]
@@ -13,7 +13,7 @@ pub async fn get_crates(db: DbConn) -> Result<Value, Custom<Value>> {
   db.run(|c| {
     CrateRepository::find_multiple(c, 100)
     .map(|crates| json!(crates))
-    .map_err(|_| Custom(Status::InternalServerError, json!("Error")))
+    .map_err(|_e| Custom(Status::InternalServerError, json!("Error")))
   }).await
 }
 
@@ -22,25 +22,25 @@ pub async fn view_crate(db: DbConn, id: i32) -> Result<Value, Custom<Value>> {
   db.run(move |c| {
     CrateRepository::find(c, id)
     .map(|crt| json!(crt))
-    .map_err(|_| Custom(Status::InternalServerError, json!("Error")))
+    .map_err(|_e| Custom(Status::InternalServerError, json!("Error")))
   }).await
 }
 
 #[post("/crate", format = "json", data = "<new_crate>")]
-pub async fn create_crate(db: DbConn, new_crate: Json<NewCrate>) -> Result<Value, Custom<Value>> {
+pub async fn create_crate(db: DbConn, new_crate: Json<NewCrate>) -> Result<Custom<Value>, Custom<Value>> {
   db.run(move |c| {
     CrateRepository::create(c, new_crate.into_inner())
-    .map(|crt| json!(crt))
-    .map_err(|_| Custom(Status::InternalServerError, json!("Error")))
+    .map(|crt| Custom(Status::Created, json!(crt)))
+    .map_err(|_e| Custom(Status::InternalServerError, json!("Error")))
   }).await
 }
 
-#[put("/crate/<id>", format = "json", data = "<crt>")]
-pub async fn update_crate(db: DbConn, id: i32, crt: Json<Crate>) -> Result<Value, Custom<Value>> {
+#[put("/crate/<id>", format = "json", data = "<new_crate>")]
+pub async fn update_crate(db: DbConn, id: i32, new_crate: Json<NewCrate>) -> Result<Value, Custom<Value>> {
   db.run(move |c| {
-    CrateRepository::save(c, id, crt.into_inner())
-    .map(|crt| json!(crt))
-    .map_err(|_| Custom(Status::InternalServerError, json!("Error")))
+    CrateRepository::save(c, id, new_crate.into_inner())
+    .map(|c| json!(c))
+    .map_err(|_e| Custom(Status::InternalServerError, json!("Error")))
   }).await
 }
 
@@ -49,6 +49,6 @@ pub async fn delete_crate(db: DbConn, id: i32) -> Result<Value, Custom<Value>> {
   db.run(move |c| {
     CrateRepository::delete(c, id)
     .map(|n| json!(n))
-    .map_err(|_| Custom(Status::InternalServerError, json!("Error")))
+    .map_err(|_e| Custom(Status::InternalServerError, json!("Error")))
   }).await
 }

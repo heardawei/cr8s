@@ -1,27 +1,32 @@
+// @generated automatically by Diesel CLI.
+
 diesel::table! {
-  crates (id) {
-    id -> Integer,
-    rustacean_id -> Integer,
-    code -> Varchar,
-    name -> Varchar,
-    version -> Varchar,
-    description -> Nullable<Text>,
-    create_at -> Timestamp,
-  }
+    crates (id) {
+        id -> Int4,
+        rustacean_id -> Int4,
+        #[max_length = 64]
+        code -> Varchar,
+        #[max_length = 128]
+        name -> Varchar,
+        #[max_length = 64]
+        version -> Varchar,
+        description -> Nullable<Text>,
+        create_at -> Timestamp,
+    }
 }
 
 diesel::table! {
-  rustaceans (id) {
-    id -> Integer,
-    name -> VarChar,
-    email -> VarChar,
-    create_at -> Timestamp,
-  }
+    rustaceans (id) {
+        id -> Int4,
+        name -> Varchar,
+        email -> Varchar,
+        create_at -> Timestamp,
+    }
 }
 
 diesel::joinable!(crates -> rustaceans (rustacean_id));
 
 diesel::allow_tables_to_appear_in_same_query!(
-  crates,
-  rustaceans,
+    crates,
+    rustaceans,
 );

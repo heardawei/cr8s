@@ -26,11 +26,11 @@ impl RustaceanRepository {
         diesel::delete(rustaceans::table.find(id)).execute(c)
     }
 
-    pub fn save(c: &mut PgConnection, id: i32, rustacean: Rustacean) -> QueryResult<Rustacean> {
+    pub fn save(c: &mut PgConnection, id: i32, new_rustacean: NewRustacean) -> QueryResult<Rustacean> {
         diesel::update(rustaceans::table.find(id))
             .set((
-                rustaceans::name.eq(rustacean.name.to_owned()),
-                rustaceans::email.eq(rustacean.email.to_owned()),
+                rustaceans::name.eq(new_rustacean.name.to_owned()),
+                rustaceans::email.eq(new_rustacean.email.to_owned()),
             ))
             .execute(c)?;
 
@@ -62,14 +62,14 @@ impl CrateRepository {
         diesel::delete(crates::table.find(id)).execute(c)
     }
 
-    pub fn save(c: &mut PgConnection, id: i32, crt: Crate) -> QueryResult<Crate> {
+    pub fn save(c: &mut PgConnection, id: i32, new_crate: NewCrate) -> QueryResult<Crate> {
         diesel::update(crates::table.find(id))
             .set((
-                crates::name.eq(crt.name.to_owned()),
-                crates::code.eq(crt.code.to_owned()),
-                crates::version.eq(crt.version.to_owned()),
-                crates::description.eq(crt.description.to_owned()),
-                crates::rustacean_id.eq(crt.rustacean_id.to_owned()),
+                crates::name.eq(new_crate.name.to_owned()),
+                crates::code.eq(new_crate.code.to_owned()),
+                crates::version.eq(new_crate.version.to_owned()),
+                crates::description.eq(new_crate.description.to_owned()),
+                crates::rustacean_id.eq(new_crate.rustacean_id.to_owned()),
             ))
             .execute(c)?;
 

@@ -11,7 +11,7 @@ docker-compose exec app diesel migration generate create_rustaceans
 docker-compose exec app diesel migration generate create_crates
 
 # diesel运行所有挂起的migration
-docker-compose exec app diesel run
+docker-compose exec app diesel migration run
 
 # 启动主程序
 docket-compose exec app cargo run

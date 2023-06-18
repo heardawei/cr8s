@@ -26,7 +26,11 @@ impl RustaceanRepository {
         diesel::delete(rustaceans::table.find(id)).execute(c)
     }
 
-    pub fn save(c: &mut PgConnection, id: i32, new_rustacean: NewRustacean) -> QueryResult<Rustacean> {
+    pub fn save(
+        c: &mut PgConnection,
+        id: i32,
+        new_rustacean: NewRustacean,
+    ) -> QueryResult<Rustacean> {
         diesel::update(rustaceans::table.find(id))
             .set((
                 rustaceans::name.eq(new_rustacean.name.to_owned()),

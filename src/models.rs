@@ -15,7 +15,9 @@ pub struct NewRustacean {
     pub email: String,
 }
 
-#[derive(diesel::Queryable, diesel::Associations, rocket::serde::Serialize, rocket::serde::Deserialize)]
+#[derive(
+    diesel::Queryable, diesel::Associations, rocket::serde::Serialize, rocket::serde::Deserialize,
+)]
 #[diesel(belongs_to(Rustacean))]
 pub struct Crate {
     pub id: i32,

@@ -11,7 +11,7 @@ diesel::table! {
         #[max_length = 64]
         version -> Varchar,
         description -> Nullable<Text>,
-        create_at -> Timestamp,
+        created_at -> Timestamp,
     }
 }
 
@@ -20,7 +20,7 @@ diesel::table! {
         id -> Int4,
         name -> Varchar,
         email -> Varchar,
-        create_at -> Timestamp,
+        created_at -> Timestamp,
     }
 }
 
